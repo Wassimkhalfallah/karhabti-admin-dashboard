@@ -1,9 +1,10 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
-import '../../config/supabase_config.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -11,17 +12,25 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController(text: 'Admin KARHABTI');
-  final TextEditingController _emailController = TextEditingController(text: 'admin@karhabti.com');
-  final TextEditingController _phoneController = TextEditingController(text: '+216 55 123 456');
-  final TextEditingController _currentPasswordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController(
+    text: 'Admin CARHABTI',
+  );
+  final TextEditingController _emailController = TextEditingController(
+    text: 'admin@carhabti.com',
+  );
+  final TextEditingController _phoneController = TextEditingController(
+    text: '+216 55 123 456',
+  );
+  final TextEditingController _currentPasswordController =
+      TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   bool _isLoading = false;
   String? _successMessage;
   String? _errorMessage;
-  
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -115,10 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Profil Utilisateur',
-          style: AppTheme.headingLarge,
-        ),
+        const Text('Profil Utilisateur', style: AppTheme.headingLarge),
         const SizedBox(height: 8),
         Text(
           'Gérez vos informations et préférences personnelles',
@@ -149,33 +155,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   CircleAvatar(
                     radius: 18,
                     backgroundColor: Colors.white,
-                    child: Icon(Icons.camera_alt, size: 18, color: AppTheme.primaryColor),
+                    child: Icon(
+                      Icons.camera_alt,
+                      size: 18,
+                      color: AppTheme.primaryColor,
+                    ),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 16),
             const Text(
-              'Admin KARHABTI',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              'Admin CARHABTI',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
-            Text(
-              'Administrateur',
-              style: TextStyle(
-                color: AppTheme.greyColor,
-              ),
-            ),
+            Text('Administrateur', style: TextStyle(color: AppTheme.greyColor)),
             const SizedBox(height: 20),
             const Divider(),
             const SizedBox(height: 20),
-            _infoItem(Icons.email_outlined, 'admin@karhabti.com'),
+            _infoItem(Icons.email_outlined, 'admin@carhabti.com'),
             _infoItem(Icons.phone_outlined, '+216 55 123 456'),
             _infoItem(Icons.location_on_outlined, 'Tunis, Tunisie'),
-            _infoItem(Icons.calendar_today_outlined, 'Inscrit depuis Janvier 2023'),
+            _infoItem(
+              Icons.calendar_today_outlined,
+              'Inscrit depuis Janvier 2023',
+            ),
             const SizedBox(height: 20),
             OutlinedButton.icon(
               onPressed: () {},
@@ -199,12 +204,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Icon(icon, color: AppTheme.primaryColor, size: 18),
           const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(fontSize: 14),
-            ),
-          ),
+          Expanded(child: Text(text, style: const TextStyle(fontSize: 14))),
         ],
       ),
     );
@@ -244,10 +244,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             child: TabBarView(
-              children: [
-                _buildPersonalInfoTab(),
-                _buildSecurityTab(),
-              ],
+              children: [_buildPersonalInfoTab(), _buildSecurityTab()],
             ),
           ),
         ],
@@ -265,10 +262,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             const Text(
               'Informations personnelles',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             const Text(
@@ -304,7 +298,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 if (value == null || value.isEmpty) {
                   return 'Veuillez entrer votre adresse email';
                 }
-                if (!RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(value)) {
+                if (!RegExp(
+                  r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$',
+                ).hasMatch(value)) {
                   return 'Veuillez entrer une adresse email valide';
                 }
                 return null;
@@ -337,13 +333,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 decoration: BoxDecoration(
                   color: AppTheme.successColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(AppTheme.borderRadius),
-                  border: Border.all(color: AppTheme.successColor.withOpacity(0.3)),
+                  border: Border.all(
+                    color: AppTheme.successColor.withOpacity(0.3),
+                  ),
                 ),
                 child: Row(
                   children: [
                     Icon(Icons.check_circle, color: AppTheme.successColor),
                     const SizedBox(width: 8),
-                    Expanded(child: Text(_successMessage!, style: TextStyle(color: AppTheme.successColor))),
+                    Expanded(
+                      child: Text(
+                        _successMessage!,
+                        style: TextStyle(color: AppTheme.successColor),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -359,19 +362,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppTheme.borderRadius),
+                        borderRadius: BorderRadius.circular(
+                          AppTheme.borderRadius,
+                        ),
                       ),
                     ),
-                    child: _isLoading
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          )
-                        : const Text('Enregistrer les modifications'),
+                    child:
+                        _isLoading
+                            ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                            : const Text('Enregistrer les modifications'),
                   ),
                 ),
               ],
@@ -390,10 +396,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           const Text(
             'Sécurité du compte',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
           const Text(
@@ -440,13 +443,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               decoration: BoxDecoration(
                 color: AppTheme.dangerColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.borderRadius),
-                border: Border.all(color: AppTheme.dangerColor.withOpacity(0.3)),
+                border: Border.all(
+                  color: AppTheme.dangerColor.withOpacity(0.3),
+                ),
               ),
               child: Row(
                 children: [
                   Icon(Icons.error_outline, color: AppTheme.dangerColor),
                   const SizedBox(width: 8),
-                  Expanded(child: Text(_errorMessage!, style: TextStyle(color: AppTheme.dangerColor))),
+                  Expanded(
+                    child: Text(
+                      _errorMessage!,
+                      style: TextStyle(color: AppTheme.dangerColor),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -458,13 +468,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               decoration: BoxDecoration(
                 color: AppTheme.successColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(AppTheme.borderRadius),
-                border: Border.all(color: AppTheme.successColor.withOpacity(0.3)),
+                border: Border.all(
+                  color: AppTheme.successColor.withOpacity(0.3),
+                ),
               ),
               child: Row(
                 children: [
                   Icon(Icons.check_circle, color: AppTheme.successColor),
                   const SizedBox(width: 8),
-                  Expanded(child: Text(_successMessage!, style: TextStyle(color: AppTheme.successColor))),
+                  Expanded(
+                    child: Text(
+                      _successMessage!,
+                      style: TextStyle(color: AppTheme.successColor),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -480,19 +497,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(AppTheme.borderRadius),
+                      borderRadius: BorderRadius.circular(
+                        AppTheme.borderRadius,
+                      ),
                     ),
                   ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : const Text('Changer le mot de passe'),
+                  child:
+                      _isLoading
+                          ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Colors.white,
+                            ),
+                          )
+                          : const Text('Changer le mot de passe'),
                 ),
               ),
             ],

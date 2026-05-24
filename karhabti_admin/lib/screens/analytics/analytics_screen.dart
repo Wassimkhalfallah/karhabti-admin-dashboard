@@ -5,7 +5,7 @@ import '../../widgets/chart_card.dart';
 import '../../widgets/stat_card.dart';
 
 class AnalyticsScreen extends StatefulWidget {
-  const AnalyticsScreen({Key? key}) : super(key: key);
+  const AnalyticsScreen({super.key});
 
   @override
   State<AnalyticsScreen> createState() => _AnalyticsScreenState();
@@ -13,8 +13,14 @@ class AnalyticsScreen extends StatefulWidget {
 
 class _AnalyticsScreenState extends State<AnalyticsScreen> {
   String _selectedPeriod = 'Ce mois';
-  final List<String> _periods = ['Aujourd\'hui', 'Cette semaine', 'Ce mois', 'Cette année', 'Tout'];
-  
+  final List<String> _periods = [
+    'Aujourd\'hui',
+    'Cette semaine',
+    'Ce mois',
+    'Cette année',
+    'Tout',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,13 +51,10 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Analytique & Statistiques',
-          style: AppTheme.headingLarge,
-        ),
+        const Text('Analytique & Statistiques', style: AppTheme.headingLarge),
         const SizedBox(height: 8),
         Text(
-          'Visualisez les performances et statistiques du système KARHABTI',
+          'Visualisez les performances et statistiques du système CARHABTI pour une meilleure prise de décision.',
           style: AppTheme.bodyMedium.copyWith(color: AppTheme.greyColor),
         ),
       ],
@@ -71,10 +74,15 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
               value: _selectedPeriod,
-              items: _periods.map((period) => DropdownMenuItem(
-                value: period,
-                child: Text(period),
-              )).toList(),
+              items:
+                  _periods
+                      .map(
+                        (period) => DropdownMenuItem(
+                          value: period,
+                          child: Text(period),
+                        ),
+                      )
+                      .toList(),
               onChanged: (value) {
                 setState(() {
                   _selectedPeriod = value!;
@@ -225,59 +233,59 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                   title: '35%',
                   color: AppTheme.primaryColor,
                   radius: 50,
-                  titleStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  titleStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 PieChartSectionData(
                   value: 25,
                   title: '25%',
                   color: AppTheme.secondaryColor,
                   radius: 50,
-                  titleStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  titleStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 PieChartSectionData(
                   value: 15,
                   title: '15%',
                   color: AppTheme.accentColor,
                   radius: 50,
-                  titleStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  titleStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 PieChartSectionData(
                   value: 10,
                   title: '10%',
                   color: AppTheme.dangerColor,
                   radius: 50,
-                  titleStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  titleStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 PieChartSectionData(
                   value: 15,
                   title: '15%',
                   color: AppTheme.greyColor,
                   radius: 50,
-                  titleStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  titleStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
             legendItems: [
-              ChartLegendItem(
-                label: 'Pneus',
-                color: AppTheme.primaryColor,
-              ),
-              ChartLegendItem(
-                label: 'Freins',
-                color: AppTheme.secondaryColor,
-              ),
-              ChartLegendItem(
-                label: 'Vidange',
-                color: AppTheme.accentColor,
-              ),
-              ChartLegendItem(
-                label: 'Batterie',
-                color: AppTheme.dangerColor,
-              ),
-              ChartLegendItem(
-                label: 'Autres',
-                color: AppTheme.greyColor,
-              ),
+              ChartLegendItem(label: 'Pneus', color: AppTheme.primaryColor),
+              ChartLegendItem(label: 'Freins', color: AppTheme.secondaryColor),
+              ChartLegendItem(label: 'Vidange', color: AppTheme.accentColor),
+              ChartLegendItem(label: 'Batterie', color: AppTheme.dangerColor),
+              ChartLegendItem(label: 'Autres', color: AppTheme.greyColor),
             ],
           ),
         ),
@@ -298,39 +306,27 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               data: [
                 CustomBarGroup(
                   x: 0,
-                  bars: [
-                    BarData(y: 25, color: AppTheme.primaryColor),
-                  ],
+                  bars: [BarData(y: 25, color: AppTheme.primaryColor)],
                 ),
                 CustomBarGroup(
                   x: 1,
-                  bars: [
-                    BarData(y: 20, color: AppTheme.primaryColor),
-                  ],
+                  bars: [BarData(y: 20, color: AppTheme.primaryColor)],
                 ),
                 CustomBarGroup(
                   x: 2,
-                  bars: [
-                    BarData(y: 18, color: AppTheme.primaryColor),
-                  ],
+                  bars: [BarData(y: 18, color: AppTheme.primaryColor)],
                 ),
                 CustomBarGroup(
                   x: 3,
-                  bars: [
-                    BarData(y: 15, color: AppTheme.primaryColor),
-                  ],
+                  bars: [BarData(y: 15, color: AppTheme.primaryColor)],
                 ),
                 CustomBarGroup(
                   x: 4,
-                  bars: [
-                    BarData(y: 12, color: AppTheme.primaryColor),
-                  ],
+                  bars: [BarData(y: 12, color: AppTheme.primaryColor)],
                 ),
                 CustomBarGroup(
                   x: 5,
-                  bars: [
-                    BarData(y: 10, color: AppTheme.primaryColor),
-                  ],
+                  bars: [BarData(y: 10, color: AppTheme.primaryColor)],
                 ),
               ],
               maxY: 30,
@@ -351,44 +347,47 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                   title: '55%',
                   color: AppTheme.primaryColor,
                   radius: 50,
-                  titleStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  titleStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 PieChartSectionData(
                   value: 30,
                   title: '30%',
                   color: AppTheme.secondaryColor,
                   radius: 50,
-                  titleStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  titleStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 PieChartSectionData(
                   value: 10,
                   title: '10%',
                   color: AppTheme.accentColor,
                   radius: 50,
-                  titleStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  titleStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 PieChartSectionData(
                   value: 5,
                   title: '5%',
                   color: AppTheme.successColor,
                   radius: 50,
-                  titleStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  titleStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
             legendItems: [
-              ChartLegendItem(
-                label: 'Diesel',
-                color: AppTheme.primaryColor,
-              ),
-              ChartLegendItem(
-                label: 'Essence',
-                color: AppTheme.secondaryColor,
-              ),
-              ChartLegendItem(
-                label: 'Hybride',
-                color: AppTheme.accentColor,
-              ),
+              ChartLegendItem(label: 'Diesel', color: AppTheme.primaryColor),
+              ChartLegendItem(label: 'Essence', color: AppTheme.secondaryColor),
+              ChartLegendItem(label: 'Hybride', color: AppTheme.accentColor),
               ChartLegendItem(
                 label: 'Électrique',
                 color: AppTheme.successColor,
@@ -406,58 +405,36 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               data: [
                 CustomBarGroup(
                   x: 0,
-                  bars: [
-                    BarData(y: 10, color: AppTheme.successColor),
-                  ],
+                  bars: [BarData(y: 10, color: AppTheme.successColor)],
                 ),
                 CustomBarGroup(
                   x: 1,
-                  bars: [
-                    BarData(y: 18, color: AppTheme.accentColor),
-                  ],
+                  bars: [BarData(y: 18, color: AppTheme.accentColor)],
                 ),
                 CustomBarGroup(
                   x: 2,
-                  bars: [
-                    BarData(y: 25, color: AppTheme.primaryColor),
-                  ],
+                  bars: [BarData(y: 25, color: AppTheme.primaryColor)],
                 ),
                 CustomBarGroup(
                   x: 3,
-                  bars: [
-                    BarData(y: 15, color: AppTheme.secondaryColor),
-                  ],
+                  bars: [BarData(y: 15, color: AppTheme.secondaryColor)],
                 ),
                 CustomBarGroup(
                   x: 4,
-                  bars: [
-                    BarData(y: 12, color: AppTheme.dangerColor),
-                  ],
+                  bars: [BarData(y: 12, color: AppTheme.dangerColor)],
                 ),
               ],
               maxY: 30,
             ),
             legendItems: [
-              ChartLegendItem(
-                label: '0-2 ans',
-                color: AppTheme.successColor,
-              ),
-              ChartLegendItem(
-                label: '3-5 ans',
-                color: AppTheme.accentColor,
-              ),
-              ChartLegendItem(
-                label: '6-10 ans',
-                color: AppTheme.primaryColor,
-              ),
+              ChartLegendItem(label: '0-2 ans', color: AppTheme.successColor),
+              ChartLegendItem(label: '3-5 ans', color: AppTheme.accentColor),
+              ChartLegendItem(label: '6-10 ans', color: AppTheme.primaryColor),
               ChartLegendItem(
                 label: '11-15 ans',
                 color: AppTheme.secondaryColor,
               ),
-              ChartLegendItem(
-                label: '16+ ans',
-                color: AppTheme.dangerColor,
-              ),
+              ChartLegendItem(label: '16+ ans', color: AppTheme.dangerColor),
             ],
           ),
         ),
@@ -523,7 +500,10 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                     children: [
                       Text(
                         'Statistiques de maintenance',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Icon(Icons.more_vert),
                     ],
@@ -548,15 +528,24 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                         children: [
                           Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text('Type de pièce', style: TextStyle(fontWeight: FontWeight.bold)),
+                            child: Text(
+                              'Type de pièce',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                           Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text('Prédictions', style: TextStyle(fontWeight: FontWeight.bold)),
+                            child: Text(
+                              'Prédictions',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                           Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text('Coût moyen', style: TextStyle(fontWeight: FontWeight.bold)),
+                            child: Text(
+                              'Coût moyen',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ],
                       ),
@@ -586,18 +575,9 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
   TableRow _buildTableRow(String type, String predictions, String cost) {
     return TableRow(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(type),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(predictions),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(cost),
-        ),
+        Padding(padding: const EdgeInsets.all(8.0), child: Text(type)),
+        Padding(padding: const EdgeInsets.all(8.0), child: Text(predictions)),
+        Padding(padding: const EdgeInsets.all(8.0), child: Text(cost)),
       ],
     );
   }

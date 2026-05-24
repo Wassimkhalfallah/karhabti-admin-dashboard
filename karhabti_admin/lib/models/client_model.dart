@@ -1,90 +1,143 @@
-// Modèle pour les clients
+// Modèle pour les clients conforme à la structure réelle de la base de données
+import 'package:flutter/foundation.dart';
+
 class Client {
   final String id;
-  final String firstName;
-  final String lastName;
-  final String email;
-  final String? phoneNumber;
-  final String? address;
+  final String nomClient;
   final DateTime createdAt;
-  final DateTime? lastLogin;
-  final List<String>? vehicleIds;
-  final bool isActive;
-  final String? profileImageUrl;
-  
+  final bool notificationsEnabled;
+  final String? fcmToken;
+  final String? typeClient; // Professionnel ou Particulier
+  final String? telephone;
+
+  // Champs virtuels (non stockés directement dans la table client)
+  final String? email; // Récupéré depuis le service auth de Supabase
+  final int
+  vehicleCount; // Calculé à partir de la table de liaison user_vehicules
+
   Client({
     required this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    this.phoneNumber,
-    this.address,
+    required this.nomClient,
     required this.createdAt,
-    this.lastLogin,
-    this.vehicleIds,
-    required this.isActive,
-    this.profileImageUrl,
+    required this.notificationsEnabled,
+    this.fcmToken,
+    this.typeClient,
+    this.telephone,
+    this.email,
+    this.vehicleCount = 0,
   });
-  
+
   factory Client.fromJson(Map<String, dynamic> json) {
-    return Client(
-      id: json['id'],
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      email: json['email'],
-      phoneNumber: json['phone_number'],
-      address: json['address'],
-      createdAt: DateTime.parse(json['created_at']),
-      lastLogin: json['last_login'] != null ? DateTime.parse(json['last_login']) : null,
-      vehicleIds: json['vehicle_ids'] != null ? List<String>.from(json['vehicle_ids']) : null,
-      isActive: json['is_active'] ?? true,
-      profileImageUrl: json['profile_image_url'],
-    );
+    try {
+      if (kDebugMode) {
+        print('🔄 Conversion JSON en Client: $json');
+      }
+
+      // Récupérer l'ID et vérifier qu'il n'est pas nul
+      final id = json['id']?.toString() ?? '';
+      if (id.isEmpty) {
+        if (kDebugMode) {
+          print('⚠️ ID client manquant ou vide');
+        }
+      }
+
+      // Récupérer le nom du client avec une valeur par défaut
+      final nomClient = json['nom_client']?.toString() ?? 'Client sans nom';
+
+      // Convertir la date avec gestion des erreurs
+      DateTime createdAt;
+      try {
+        createdAt =
+            json['created_at'] != null
+                ? DateTime.parse(json['created_at'].toString())
+                : DateTime.now();
+      } catch (e) {
+        if (kDebugMode) {
+          print('⚠️ Erreur de conversion de date: $e');
+        }
+        createdAt = DateTime.now();
+      }
+
+      // Récupérer le statut des notifications avec valeur par défaut à false
+      final notificationsEnabled = json['notifications_enabled'] == true;
+
+      return Client(
+        id: id,
+        nomClient: nomClient,
+        createdAt: createdAt,
+        notificationsEnabled: notificationsEnabled,
+        fcmToken: json['fcm_token']?.toString(),
+        typeClient: json['type_client']?.toString(),
+        telephone: json['telephone']?.toString(),
+        email:
+            json['email']
+                ?.toString(), // Sera rempli manuellement après la requête auth
+        vehicleCount:
+            json['vehicle_count'] is int
+                ? json['vehicle_count']
+                : 0, // Calculé après la requête
+      );
+    } catch (e) {
+      if (kDebugMode) {
+        print('❌ Erreur lors de la conversion JSON en Client: $e');
+        print('JSON problématique: $json');
+      }
+
+      // Retourner un client par défaut en cas d'erreur
+      return Client(
+        id: 'error-${DateTime.now().millisecondsSinceEpoch}',
+        nomClient: 'Erreur de conversion',
+        createdAt: DateTime.now(),
+        notificationsEnabled: false,
+        vehicleCount: 0,
+      );
+    }
   }
-  
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'first_name': firstName,
-      'last_name': lastName,
-      'email': email,
-      'phone_number': phoneNumber,
-      'address': address,
+      'nom_client': nomClient,
       'created_at': createdAt.toIso8601String(),
-      'last_login': lastLogin?.toIso8601String(),
-      'vehicle_ids': vehicleIds,
-      'is_active': isActive,
-      'profile_image_url': profileImageUrl,
+      'notifications_enabled': notificationsEnabled,
+      'fcm_token': fcmToken,
+      'type_client': typeClient,
+      'telephone': telephone,
+      // Les champs virtuels ne sont pas inclus dans le toJson
+      // car ils ne sont pas stockés directement dans la table client
     };
   }
-  
-  String get fullName => '$firstName $lastName';
-  
+
+  // Modification pour ajouter des données virtuelles (email, vehicleCount)
   Client copyWith({
     String? id,
-    String? firstName,
-    String? lastName,
-    String? email,
-    String? phoneNumber,
-    String? address,
+    String? nomClient,
     DateTime? createdAt,
-    DateTime? lastLogin,
-    List<String>? vehicleIds,
-    bool? isActive,
-    String? profileImageUrl,
+    bool? notificationsEnabled,
+    String? fcmToken,
+    String? typeClient,
+    String? telephone,
+    String? email,
+    int? vehicleCount,
   }) {
     return Client(
       id: id ?? this.id,
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      email: email ?? this.email,
-      phoneNumber: phoneNumber ?? this.phoneNumber,
-      address: address ?? this.address,
+      nomClient: nomClient ?? this.nomClient,
       createdAt: createdAt ?? this.createdAt,
-      lastLogin: lastLogin ?? this.lastLogin,
-      vehicleIds: vehicleIds ?? this.vehicleIds,
-      isActive: isActive ?? this.isActive,
-      profileImageUrl: profileImageUrl ?? this.profileImageUrl,
+      notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
+      fcmToken: fcmToken ?? this.fcmToken,
+      typeClient: typeClient ?? this.typeClient,
+      telephone: telephone ?? this.telephone,
+      email: email ?? this.email,
+      vehicleCount: vehicleCount ?? this.vehicleCount,
     );
+  }
+
+  @override
+  String toString() {
+    if (kDebugMode) {
+      return 'Client{id: $id, nom: $nomClient, type: $typeClient, véhicules: $vehicleCount}';
+    }
+    return 'Client{id: $id, nom: $nomClient, type: $typeClient, véhicules: $vehicleCount}';
   }
 }

@@ -45,6 +45,7 @@ class StatCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
+                      // ignore: deprecated_member_use
                       color: (iconColor ?? AppTheme.primaryColor).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(10),
                     ),

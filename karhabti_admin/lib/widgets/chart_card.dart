@@ -136,6 +136,7 @@ class LineChartWidget extends StatelessWidget {
             dotData: FlDotData(show: lineData.showDots),
             belowBarData: BarAreaData(
               show: lineData.showArea,
+              // ignore: deprecated_member_use
               color: lineData.color.withOpacity(0.15),
             ),
           )

@@ -1,10 +1,11 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
-import '../../models/feedback_model.dart';
 import '../../widgets/stat_card.dart';
 
 class FeedbackScreen extends StatefulWidget {
-  const FeedbackScreen({Key? key}) : super(key: key);
+  const FeedbackScreen({super.key});
 
   @override
   State<FeedbackScreen> createState() => _FeedbackScreenState();
@@ -13,18 +14,24 @@ class FeedbackScreen extends StatefulWidget {
 class _FeedbackScreenState extends State<FeedbackScreen> {
   String _selectedCategory = 'Tous';
   int _selectedIndex = -1;
-  
-  final List<String> _categories = ['Tous', 'Non lus', 'En attente', 'Ru00e9pondus', 'Archivu00e9s'];
-  
+
+  final List<String> _categories = [
+    'Tous',
+    'Non lus',
+    'En attente',
+    'Ru00e9pondus',
+    'Archivu00e9s',
+  ];
+
   // Donnu00e9es de du00e9monstration pour les messages
   List<Map<String, dynamic>> _messages = [];
-  
+
   @override
   void initState() {
     super.initState();
     _generateDummyMessages();
   }
-  
+
   void _generateDummyMessages() {
     final subjects = [
       'Problu00e8me avec l\'application',
@@ -38,17 +45,41 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       'Bug dans l\'interface',
       'Question sur la batterie',
     ];
-    
-    final clientNames = ['Mohamed A.', 'Sarah B.', 'Ahmed C.', 'Amina D.', 'Karim E.', 'Leila F.', 'Youssef G.', 'Yasmine H.', 'Ali I.', 'Nour J.'];
-    final vehicleInfos = ['Renault Clio 2018', 'Peugeot 208 2020', 'Volkswagen Golf 2019', 'Toyota Corolla 2021', 'Ford Focus 2017'];
-    
+
+    final clientNames = [
+      'Mohamed A.',
+      'Sarah B.',
+      'Ahmed C.',
+      'Amina D.',
+      'Karim E.',
+      'Leila F.',
+      'Youssef G.',
+      'Yasmine H.',
+      'Ali I.',
+      'Nour J.',
+    ];
+    final vehicleInfos = [
+      'Renault Clio 2018',
+      'Peugeot 208 2020',
+      'Volkswagen Golf 2019',
+      'Toyota Corolla 2021',
+      'Ford Focus 2017',
+    ];
+
     final List<Map<String, dynamic>> messages = [];
-    
+
     for (int i = 0; i < 20; i++) {
       final now = DateTime.now();
       final date = now.subtract(Duration(days: i ~/ 2, hours: i * 3));
-      final status = i % 5 == 0 ? 'unread' : i % 5 == 1 ? 'pending' : i % 5 == 2 ? 'responded' : 'archived';
-      
+      final status =
+          i % 5 == 0
+              ? 'unread'
+              : i % 5 == 1
+              ? 'pending'
+              : i % 5 == 2
+              ? 'responded'
+              : 'archived';
+
       messages.add({
         'id': 'MSG$i',
         'subject': subjects[i % subjects.length],
@@ -57,24 +88,24 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         'date': date,
         'status': status,
         'isRead': status != 'unread',
-        'message': 'Bonjour l\'u00e9quipe KARHABTI,\n\nJe vous contacte au sujet de ${subjects[i % subjects.length].toLowerCase()}. ' + 
-                 'J\'aimerais avoir plus d\'informations ou de l\'aide concernant ce problu00e8me.\n\n' + 
-                 'Merci d\'avance pour votre ru00e9ponse.\n\nCordialement,\n${clientNames[i % clientNames.length]}',
+        'message':
+            'Bonjour l\'equipe CARHABTI,\n\nJe vous contacte au sujet de ${subjects[i % subjects.length].toLowerCase()}. '
+                'J\'aimerais avoir plus d\'informations ou de l\'aide concernant ce probleme.\n\n' 'Merci d\'avance pour votre reponse.\n\nCordialement,\n${clientNames[i % clientNames.length]}',
         'vehicleInfo': vehicleInfos[i % vehicleInfos.length],
         'vehicleId': 'V${i % 5 + 1}',
-        'response': status == 'responded' || status == 'archived' ? 
-                   'Bonjour ${clientNames[i % clientNames.length]},\n\nMerci pour votre message. ' + 
-                   'Nous avons bien reu00e7u votre demande concernant ${subjects[i % subjects.length].toLowerCase()}.\n\n' + 
-                   'Notre u00e9quipe est u00e0 votre disposition pour toute information complu00e9mentaire.\n\n' + 
-                   'Cordialement,\nL\'u00e9quipe KARHABTI' : null,
+        'response':
+            status == 'responded' || status == 'archived'
+                ? 'Bonjour ${clientNames[i % clientNames.length]},\n\nMerci pour votre message. '
+                        'Nous avons bien reu00e7u votre demande concernant ${subjects[i % subjects.length].toLowerCase()}.\n\n' 'Notre u00e9quipe est u00e0 votre disposition pour toute information complu00e9mentaire.\n\n' 'Cordialement,\nL\'u00e9quipe CARHABTI'
+                : null,
       });
     }
-    
+
     setState(() {
       _messages = messages;
     });
   }
-  
+
   List<Map<String, dynamic>> get filteredMessages {
     if (_selectedCategory == 'Tous') {
       return _messages;
@@ -84,11 +115,12 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       return _messages.where((msg) => msg['status'] == 'pending').toList();
     } else if (_selectedCategory == 'Ru00e9pondus') {
       return _messages.where((msg) => msg['status'] == 'responded').toList();
-    } else { // Archivu00e9s
+    } else {
+      // Archivu00e9s
       return _messages.where((msg) => msg['status'] == 'archived').toList();
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,10 +128,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: _buildHeader(),
-          ),
+          Padding(padding: const EdgeInsets.all(16.0), child: _buildHeader()),
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -116,19 +145,11 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               child: Row(
                 children: [
                   // Panneau de navigation u00e0 gauche
-                  SizedBox(
-                    width: 300,
-                    child: _buildMessagesList(),
-                  ),
+                  SizedBox(width: 300, child: _buildMessagesList()),
                   // Su00e9parateur vertical
-                  Container(
-                    width: 1,
-                    color: AppTheme.lightGreyColor,
-                  ),
+                  Container(width: 1, color: AppTheme.lightGreyColor),
                   // Du00e9tails du message u00e0 droite
-                  Expanded(
-                    child: _buildMessageDetails(),
-                  ),
+                  Expanded(child: _buildMessageDetails()),
                 ],
               ),
             ),
@@ -142,25 +163,26 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Feedback & Messages',
-          style: AppTheme.headingLarge,
-        ),
+        const Text('Feedback & Messages', style: AppTheme.headingLarge),
         const SizedBox(height: 8),
         Text(
-          'Gu00e9rez les retours et messages des utilisateurs de l\'application KARHABTI',
+          'Gérez les retours et messages des utilisateurs de l\'application CARHABTI pour offrir une meilleure expérience client.',
           style: AppTheme.bodyMedium.copyWith(color: AppTheme.greyColor),
         ),
       ],
     );
   }
-  
+
   Widget _buildStatCards() {
     final int totalMessages = _messages.length;
-    final int unreadMessages = _messages.where((msg) => msg['status'] == 'unread').length;
-    final int pendingMessages = _messages.where((msg) => msg['status'] == 'pending').length;
-    final int respondedMessages = _messages.where((msg) => msg['status'] == 'responded').length;
-    final int archivedMessages = _messages.where((msg) => msg['status'] == 'archived').length;
+    final int unreadMessages =
+        _messages.where((msg) => msg['status'] == 'unread').length;
+    final int pendingMessages =
+        _messages.where((msg) => msg['status'] == 'pending').length;
+    final int respondedMessages =
+        _messages.where((msg) => msg['status'] == 'responded').length;
+    final int archivedMessages =
+        _messages.where((msg) => msg['status'] == 'archived').length;
 
     return Row(
       children: [
@@ -241,7 +263,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       ],
     );
   }
-  
+
   Widget _buildMessagesList() {
     return Column(
       children: [
@@ -259,7 +281,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     hintText: 'Rechercher...',
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(AppTheme.borderRadius),
+                      borderRadius: BorderRadius.circular(
+                        AppTheme.borderRadius,
+                      ),
                     ),
                     contentPadding: const EdgeInsets.symmetric(vertical: 12),
                     isDense: true,
@@ -270,12 +294,16 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               PopupMenuButton<String>(
                 icon: const Icon(Icons.filter_list),
                 tooltip: 'Filtrer',
-                itemBuilder: (context) => _categories
-                    .map((category) => PopupMenuItem(
-                          value: category,
-                          child: Text(category),
-                        ))
-                    .toList(),
+                itemBuilder:
+                    (context) =>
+                        _categories
+                            .map(
+                              (category) => PopupMenuItem(
+                                value: category,
+                                child: Text(category),
+                              ),
+                            )
+                            .toList(),
                 onSelected: (value) {
                   setState(() {
                     _selectedCategory = value;
@@ -295,17 +323,21 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
               final message = filteredMessages[index];
               final isSelected = index == _selectedIndex;
               final isUnread = message['status'] == 'unread';
-              
+
               return ListTile(
                 selected: isSelected,
                 selectedTileColor: AppTheme.primaryColor.withOpacity(0.05),
                 leading: CircleAvatar(
-                  backgroundColor: isUnread ? AppTheme.primaryColor : AppTheme.greyColor.withOpacity(0.1),
+                  backgroundColor:
+                      isUnread
+                          ? AppTheme.primaryColor
+                          : AppTheme.greyColor.withOpacity(0.1),
                   radius: 18,
                   child: Text(
                     message['clientName'].toString().substring(0, 1),
                     style: TextStyle(
-                      color: isUnread ? AppTheme.whiteColor : AppTheme.greyColor,
+                      color:
+                          isUnread ? AppTheme.whiteColor : AppTheme.greyColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -343,16 +375,16 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       ],
     );
   }
-  
+
   Widget _buildMessageDetails() {
     if (_selectedIndex == -1 || filteredMessages.isEmpty) {
       return const Center(
         child: Text('Su00e9lectionnez un message pour voir les du00e9tails'),
       );
     }
-    
+
     final message = filteredMessages[_selectedIndex];
-    
+
     return Column(
       children: [
         // Entu00eate du message
@@ -369,7 +401,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 children: [
                   Text(
                     message['subject'],
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Row(
@@ -431,7 +466,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                         children: [
                           CircleAvatar(
                             radius: 18,
-                            child: Text(message['clientName'].toString().substring(0, 1)),
+                            child: Text(
+                              message['clientName'].toString().substring(0, 1),
+                            ),
                           ),
                           const SizedBox(width: 8),
                           Column(
@@ -439,11 +476,16 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                             children: [
                               Text(
                                 message['clientName'],
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               Text(
                                 _formatDate(message['date'], showTime: true),
-                                style: const TextStyle(fontSize: 12, color: AppTheme.greyColor),
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: AppTheme.greyColor,
+                                ),
                               ),
                             ],
                           ),
@@ -454,16 +496,20 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     ],
                   ),
                 ),
-                
+
                 // Ru00e9ponse si disponible
-                if (message['response'] != null) ...[  
+                if (message['response'] != null) ...[
                   const SizedBox(height: 16),
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: AppTheme.primaryColor.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(AppTheme.borderRadius),
-                      border: Border.all(color: AppTheme.primaryColor.withOpacity(0.2)),
+                      borderRadius: BorderRadius.circular(
+                        AppTheme.borderRadius,
+                      ),
+                      border: Border.all(
+                        color: AppTheme.primaryColor.withOpacity(0.2),
+                      ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -473,19 +519,25 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                             const CircleAvatar(
                               radius: 18,
                               backgroundColor: AppTheme.primaryColor,
-                              child: Icon(Icons.support_agent, color: Colors.white),
+                              child: Icon(
+                                Icons.support_agent,
+                                color: Colors.white,
+                              ),
                             ),
                             const SizedBox(width: 8),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'L\'u00e9quipe KARHABTI',
+                                  'L\'équipe CARHABTI',
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  'Ru00e9pondu ${_formatDate(message['date'].add(const Duration(hours: 2)), showTime: true)}',
-                                  style: const TextStyle(fontSize: 12, color: AppTheme.greyColor),
+                                  'épondu ${_formatDate(message['date'].add(const Duration(hours: 2)), showTime: true)}',
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: AppTheme.greyColor,
+                                  ),
                                 ),
                               ],
                             ),
@@ -497,9 +549,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                     ),
                   ),
                 ],
-                
+
                 // Zone de ru00e9ponse si le message n'est pas encore ru00e9pondu
-                if (message['status'] != 'responded' && message['status'] != 'archived') ...[  
+                if (message['status'] != 'responded' &&
+                    message['status'] != 'archived') ...[
                   const SizedBox(height: 24),
                   const Text(
                     'Ru00e9pondre',
@@ -536,7 +589,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       ],
     );
   }
-  
+
   Widget _getStatusIcon(String status) {
     switch (status) {
       case 'unread':
@@ -549,20 +602,28 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           ),
         );
       case 'pending':
-        return const Icon(Icons.watch_later, color: AppTheme.accentColor, size: 18);
+        return const Icon(
+          Icons.watch_later,
+          color: AppTheme.accentColor,
+          size: 18,
+        );
       case 'responded':
-        return const Icon(Icons.done_all, color: AppTheme.successColor, size: 18);
+        return const Icon(
+          Icons.done_all,
+          color: AppTheme.successColor,
+          size: 18,
+        );
       case 'archived':
         return const Icon(Icons.archive, color: AppTheme.greyColor, size: 18);
       default:
         return const SizedBox.shrink();
     }
   }
-  
+
   String _formatDate(DateTime date, {bool showTime = false}) {
     final now = DateTime.now();
     final diff = now.difference(date);
-    
+
     if (diff.inDays == 0) {
       if (diff.inHours == 0) {
         return 'Il y a ${diff.inMinutes} min';
@@ -579,27 +640,28 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       return '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
     }
   }
-  
+
   void _sendResponse() {
     if (_selectedIndex >= 0) {
       setState(() {
         filteredMessages[_selectedIndex]['status'] = 'responded';
-        filteredMessages[_selectedIndex]['response'] = 'Bonjour ${filteredMessages[_selectedIndex]['clientName']},\n\nMerci pour votre message. ' + 
-               'Nous avons bien reu00e7u votre demande concernant ${filteredMessages[_selectedIndex]['subject'].toLowerCase()}.\n\n' + 
-               'Notre u00e9quipe est u00e0 votre disposition pour toute information complu00e9mentaire.\n\n' + 
-               'Cordialement,\nL\'u00e9quipe KARHABTI';
+        filteredMessages[_selectedIndex]['response'] =
+            'Bonjour ${filteredMessages[_selectedIndex]['clientName']},\n\nMerci pour votre message. '
+                'Nous avons bien reçu votre demande concernant ${filteredMessages[_selectedIndex]['subject'].toLowerCase()}.\n\n' 'Notre equipe est une votre disposition pour toute information complumentaire.\n\n' 'Cordialement,\nL\'equipe CARHABTI';
       });
       _showSnackBar('Ru00e9ponse envoyu00e9e avec succu00e8s');
     }
   }
-  
+
   void _confirmDeleteMessage() {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('Supprimer le message'),
-          content: const Text('u00cates-vous su00fbr de vouloir supprimer ce message ? Cette action est irru00e9versible.'),
+          content: const Text(
+            'u00cates-vous su00fbr de vouloir supprimer ce message ? Cette action est irru00e9versible.',
+          ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
@@ -617,7 +679,9 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                 });
                 _showSnackBar('Message supprimu00e9');
               },
-              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.dangerColor),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.dangerColor,
+              ),
               child: const Text('Supprimer'),
             ),
           ],
@@ -625,10 +689,10 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
       },
     );
   }
-  
+
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 }

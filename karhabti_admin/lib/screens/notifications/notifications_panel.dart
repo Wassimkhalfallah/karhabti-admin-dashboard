@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 
@@ -23,8 +25,8 @@ enum NotificationType { info, warning, error, success }
 
 class NotificationsPanel extends StatefulWidget {
   final Function? onClose;
-  
-  const NotificationsPanel({Key? key, this.onClose}) : super(key: key);
+
+  const NotificationsPanel({super.key, this.onClose});
 
   @override
   State<NotificationsPanel> createState() => _NotificationsPanelState();
@@ -35,7 +37,8 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
     Notification(
       id: '1',
       title: 'Stock faible',
-      message: 'Le stock de plaquettes de frein est en dessous du seuil minimum (5 pièces)',
+      message:
+          'Le stock de plaquettes de frein est en dessous du seuil minimum (5 pièces)',
       time: DateTime.now().subtract(const Duration(minutes: 30)),
       type: NotificationType.warning,
     ),
@@ -121,9 +124,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
       child: Container(
         width: 350,
         height: 500,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
+        decoration: const BoxDecoration(color: Colors.white),
         child: Column(
           children: [
             _buildHeader(),
@@ -154,10 +155,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
         children: [
           const Text(
             'Notifications',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           IconButton(
             icon: const Icon(Icons.close),
@@ -175,16 +173,12 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
 
   Widget _buildFilters() {
     final unreadCount = _notifications.where((notif) => !notif.isRead).length;
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border(
-          bottom: BorderSide(
-            color: Colors.grey.withOpacity(0.2),
-          ),
-        ),
+        border: Border(bottom: BorderSide(color: Colors.grey.withOpacity(0.2))),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,7 +200,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                     _showOnlyUnread = value;
                   });
                 },
-                activeColor: AppTheme.primaryColor,
+                activeThumbColor: AppTheme.primaryColor,
               ),
             ],
           ),
@@ -216,7 +210,10 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
               'Tout marquer comme lu',
               style: TextStyle(
                 fontSize: 13,
-                color: unreadCount > 0 ? AppTheme.primaryColor : AppTheme.greyColor,
+                color:
+                    unreadCount > 0
+                        ? AppTheme.primaryColor
+                        : AppTheme.greyColor,
               ),
             ),
           ),
@@ -239,23 +236,19 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
             const SizedBox(height: 16),
             Text(
               'Aucune notification',
-              style: TextStyle(
-                fontSize: 16,
-                color: AppTheme.greyColor,
-              ),
+              style: TextStyle(fontSize: 16, color: AppTheme.greyColor),
             ),
           ],
         ),
       );
     }
-    
+
     return ListView.separated(
       padding: const EdgeInsets.all(0),
       itemCount: _filteredNotifications.length,
-      separatorBuilder: (context, index) => Divider(
-        height: 1,
-        color: Colors.grey.withOpacity(0.2),
-      ),
+      separatorBuilder:
+          (context, index) =>
+              Divider(height: 1, color: Colors.grey.withOpacity(0.2)),
       itemBuilder: (context, index) {
         final notification = _filteredNotifications[index];
         return _buildNotificationItem(notification);
@@ -267,7 +260,9 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       leading: CircleAvatar(
-        backgroundColor: _getNotificationColor(notification.type).withOpacity(0.2),
+        backgroundColor: _getNotificationColor(
+          notification.type,
+        ).withOpacity(0.2),
         child: Icon(
           _getNotificationIcon(notification.type),
           color: _getNotificationColor(notification.type),
@@ -280,17 +275,15 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
             child: Text(
               notification.title,
               style: TextStyle(
-                fontWeight: notification.isRead ? FontWeight.normal : FontWeight.bold,
+                fontWeight:
+                    notification.isRead ? FontWeight.normal : FontWeight.bold,
                 fontSize: 14,
               ),
             ),
           ),
           Text(
             _formatTime(notification.time),
-            style: TextStyle(
-              fontSize: 12,
-              color: AppTheme.greyColor,
-            ),
+            style: TextStyle(fontSize: 12, color: AppTheme.greyColor),
           ),
         ],
       ),
@@ -312,7 +305,10 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
                 TextButton(
                   onPressed: () => _markAsRead(notification.id),
                   style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 0,
+                    ),
                     minimumSize: const Size(0, 30),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
@@ -330,7 +326,10 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
           ),
         ],
       ),
-      tileColor: notification.isRead ? Colors.white : AppTheme.lightGreyColor.withOpacity(0.1),
+      tileColor:
+          notification.isRead
+              ? Colors.white
+              : AppTheme.lightGreyColor.withOpacity(0.1),
     );
   }
 
@@ -339,9 +338,7 @@ class _NotificationsPanelState extends State<NotificationsPanel> {
       padding: const EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border(
-          top: BorderSide(color: Colors.grey.withOpacity(0.2)),
-        ),
+        border: Border(top: BorderSide(color: Colors.grey.withOpacity(0.2))),
       ),
       child: Center(
         child: TextButton(
