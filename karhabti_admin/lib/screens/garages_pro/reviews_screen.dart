@@ -7,7 +7,9 @@ import '../../models/review_pro_model.dart';
 import '../../services/garage_pro_service.dart';
 
 class ReviewsScreen extends StatefulWidget {
-  const ReviewsScreen({super.key});
+  final String? garageId;
+
+  const ReviewsScreen({super.key, this.garageId});
 
   @override
   State<ReviewsScreen> createState() => _ReviewsScreenState();
@@ -28,7 +30,10 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
 
   Future<void> _loadData() async {
     setState(() => _loading = true);
-    final reviews = await _service.getReviews(estVisible: _visibleFilter);
+    final reviews = await _service.getReviews(
+      garageId: widget.garageId,
+      estVisible: _visibleFilter,
+    );
     if (mounted) {
       setState(() {
         _reviews = _reponduFilter == null

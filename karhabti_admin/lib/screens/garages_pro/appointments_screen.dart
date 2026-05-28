@@ -404,7 +404,9 @@ ThemeData _lightTheme() => ThemeData.light(useMaterial3: true).copyWith(
 //  SCREEN
 // ═══════════════════════════════════════════════════════════════
 class AppointmentsScreen extends StatefulWidget {
-  const AppointmentsScreen({super.key});
+  final String? garageId;
+
+  const AppointmentsScreen({super.key, this.garageId});
 
   @override
   State<AppointmentsScreen> createState() => _AppointmentsScreenState();
@@ -470,8 +472,15 @@ class _AppointmentsScreenState extends State<AppointmentsScreen>
     setState(() => _loading = true);
     _contentCtrl.reset();
     _headerCtrl.reset();
-    final all = await _service.getAppointments(statut: _statusFilter);
-    final today = await _service.getTodayAppointments();
+    final gid = widget.garageId;
+    final all = await _service.getAppointments(statut: _statusFilter, garageId: gid);
+    final today = gid != null
+        ? await _service.getAppointments(
+            garageId: gid,
+            dateDebut: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
+            dateFin: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 23, 59, 59),
+          )
+        : await _service.getTodayAppointments();
     if (mounted) {
       setState(() {
         _all = all;

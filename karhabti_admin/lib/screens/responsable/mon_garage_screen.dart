@@ -30,30 +30,38 @@ class _MonGarageScreenState extends State<MonGarageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Mon garage')),
-      body: _loading
-          ? const Center(child: CircularProgressIndicator())
-          : _garage == null
-              ? const Center(child: Text('Garage introuvable'))
-              : Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(_garage!['nom'] ?? '', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                      Text('${_garage!['adresse'] ?? ''}, ${_garage!['ville'] ?? ''}'),
-                      const SizedBox(height: 12),
-                      ElevatedButton(
-                        onPressed: () async {
-                          await showDialog(context: context, builder: (_) => const GarageFormScreen());
-                          _load();
-                        },
-                        child: const Text('Modifier'),
-                      ),
-                    ],
-                  ),
-                ),
+    if (_loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (_garage == null) {
+      return const Center(child: Text('Garage introuvable'));
+    }
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _garage!['nom'] ?? '',
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          Text('${_garage!['adresse'] ?? ''}, ${_garage!['ville'] ?? ''}'),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () async {
+              final g = await _service.getGarageById(widget.garageId);
+              if (!context.mounted || g == null) return;
+              await showDialog(
+                context: context,
+                builder: (_) => GarageFormScreen(garage: g),
+              );
+              _load();
+            },
+            child: const Text('Modifier le garage'),
+          ),
+        ],
+      ),
     );
   }
 }

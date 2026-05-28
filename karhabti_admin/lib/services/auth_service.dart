@@ -128,25 +128,43 @@ class AuthService {
   }
 
   Future<bool> isAdmin(String userId) async {
+    // 1) admins table
     try {
       final response = await _client
           .from('admins')
           .select('id')
           .eq('id', userId)
           .maybeSingle();
-      if (response != null) {
-        return true;
-      }
+      if (response != null) return true;
+    } catch (_) {
+      // Ignore and continue with fallback
+    }
 
-      final fallback = await _client
+    // 2) admin_users.user_id
+    try {
+      final fallbackUserId = await _client
           .from('admin_users')
           .select('user_id')
           .eq('user_id', userId)
           .maybeSingle();
-      return fallback != null;
+      if (fallbackUserId != null) return true;
     } catch (_) {
-      return false;
+      // Ignore and continue with fallback
     }
+
+    // 3) admin_users.id
+    try {
+      final fallbackId = await _client
+          .from('admin_users')
+          .select('id')
+          .eq('id', userId)
+          .maybeSingle();
+      if (fallbackId != null) return true;
+    } catch (_) {
+      // Ignore
+    }
+
+    return false;
   }
 
   Future<bool> isResponsableTechnicien(String userId) async {

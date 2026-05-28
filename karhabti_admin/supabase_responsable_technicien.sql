@@ -100,3 +100,61 @@ with check (
   responsable_id = auth.uid()
   or exists(select 1 from public.admins a where a.id = auth.uid())
 );
+
+-- ---------------------------------------------------------------------------
+-- RLS helpers for role detection (recommended)
+-- These policies ensure authenticated users can read their own admin row,
+-- and admins can read all rows.
+-- ---------------------------------------------------------------------------
+
+-- admins table: self-read only (avoid recursion)
+do $$
+begin
+  if exists (
+    select 1 from pg_tables where schemaname = 'public' and tablename = 'admins'
+  ) then
+    alter table public.admins enable row level security;
+    drop policy if exists admins_select_self on public.admins;
+    drop policy if exists admins_select_self_or_admin on public.admins;
+    create policy admins_select_self on public.admins
+    for select to authenticated
+    using (id = auth.uid());
+  end if;
+end $$;
+
+-- admin_users table: allow self-read only (supports `user_id` or `id`)
+do $$
+declare
+  has_user_id boolean := false;
+begin
+  if exists (
+    select 1 from pg_tables where schemaname = 'public' and tablename = 'admin_users'
+  ) then
+    select exists(
+      select 1
+      from information_schema.columns
+      where table_schema='public'
+        and table_name='admin_users'
+        and column_name='user_id'
+    )
+    into has_user_id;
+
+    alter table public.admin_users enable row level security;
+    drop policy if exists admin_users_select_self on public.admin_users;
+    drop policy if exists admin_users_select_self_or_admin on public.admin_users;
+
+    if has_user_id then
+      execute $q$
+        create policy admin_users_select_self on public.admin_users
+        for select to authenticated
+        using (user_id = auth.uid())
+      $q$;
+    else
+      execute $q$
+        create policy admin_users_select_self on public.admin_users
+        for select to authenticated
+        using (id = auth.uid())
+      $q$;
+    end if;
+  end if;
+end $$;
