@@ -360,10 +360,11 @@ class _GarageFormScreenState extends State<GarageFormScreen> {
     try {
       if (widget.garage != null) {
         await _service.updateGarage(widget.garage!.id, data);
+        if (mounted) Navigator.pop(context, true);
       } else {
-        await _service.createGarage(data);
+        final created = await _service.createGarage(data);
+        if (mounted) Navigator.pop(context, created);
       }
-      if (mounted) Navigator.pop(context, true);
     } catch (e) {
       _showSnack('Erreur lors de l\'enregistrement : $e', isError: true);
     } finally {

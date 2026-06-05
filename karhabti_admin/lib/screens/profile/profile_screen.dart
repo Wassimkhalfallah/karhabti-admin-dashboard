@@ -148,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const CircleAvatar(
               radius: 60,
               backgroundColor: Colors.grey,
-              backgroundImage: AssetImage('assets/images/profile.jpg'),
+              backgroundImage: AssetImage('assets/Logo_KARHABTI.png'),
               child: Stack(
                 alignment: Alignment.bottomRight,
                 children: [

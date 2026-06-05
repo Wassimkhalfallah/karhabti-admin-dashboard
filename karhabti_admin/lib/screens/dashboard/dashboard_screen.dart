@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, duplicate_ignore
+// ignore_for_file: deprecated_member_use, duplicate_ignore, unused_field
 
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -59,7 +59,7 @@ const _quickActions = [
     icon:     Icons.directions_car_rounded,
     color:    _D.indigo,
     bgColor:  _D.indigoL,
-    navIndex: 3,
+    navIndex: 1,
   ),
   _QuickAction(
     label:    'Clients',
@@ -67,47 +67,23 @@ const _quickActions = [
     icon:     Icons.people_rounded,
     color:    _D.emerald,
     bgColor:  _D.emeraldL,
-    navIndex: 4,
-  ),
-  _QuickAction(
-    label:    'Pièces',
-    sub:      'Inventaire',
-    icon:     Icons.settings_rounded,
-    color:    _D.amber,
-    bgColor:  _D.amberL,
-    navIndex: 1,
-  ),
-  _QuickAction(
-    label:    'Affectation',
-    sub:      'Pièces ↔ Véhicules',
-    icon:     Icons.assignment_turned_in_rounded,
-    color:    _D.sky,
-    bgColor:  _D.skyL,
     navIndex: 2,
   ),
   _QuickAction(
-    label:    'Garages PRO',
-    sub:      'Dashboard partenaires',
-    icon:     Icons.store_rounded,
-    color:    _D.violet,
-    bgColor:  _D.violetL,
-    navIndex: 9,
+    label:    'Responsables',
+    sub:      'Techniciens garage',
+    icon:     Icons.engineering_rounded,
+    color:    _D.amber,
+    bgColor:  _D.amberL,
+    navIndex: 3,
   ),
   _QuickAction(
-    label:    'Rendez-vous',
-    sub:      'Planning & suivi',
-    icon:     Icons.calendar_month_rounded,
-    color:    _D.orange,
-    bgColor:  _D.orangeL,
-    navIndex: 11,
-  ),
-  _QuickAction(
-    label:    'Avis clients',
-    sub:      'Modération',
-    icon:     Icons.star_rounded,
-    color:    _D.rose,
-    bgColor:  _D.roseL,
-    navIndex: 12,
+    label:    'Feedbacks',
+    sub:      'Retours utilisateurs',
+    icon:     Icons.feedback_rounded,
+    color:    _D.sky,
+    bgColor:  _D.skyL,
+    navIndex: 4,
   ),
   _QuickAction(
     label:    'Analytiques',
@@ -115,7 +91,7 @@ const _quickActions = [
     icon:     Icons.analytics_rounded,
     color:    _D.textSec,
     bgColor:  _D.surface2,
-    navIndex: 6,
+    navIndex: 5,
   ),
 ];
 
@@ -386,11 +362,11 @@ class _DashboardScreenState extends State<DashboardScreen>
         } else if (k.label.contains('Pièce')) {
           _navigate(1);
         } else if (k.label.contains('RDV')) {
-          _navigate(11);
+          _navigate(10);
         } else if (k.label.contains('Garage')) {
-          _navigate(9);
+          _navigate(10);
         } else if (k.label.contains('Note')) {
-          _navigate(12);
+          _navigate(6);
         }
       },
       child: Container(
@@ -455,7 +431,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           _sectionLabel('Garages PRO', Icons.store_rounded),
           const Spacer(),
           GestureDetector(
-            onTap: () => _navigate(9),
+            onTap: () => _navigate(10),
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
@@ -535,7 +511,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     final note = stats.noteMoyenneGlobale;
     final color = note >= 4 ? _D.emerald : note >= 3 ? _D.amber : _D.rose;
     return GestureDetector(
-      onTap: () => _navigate(12),
+      onTap: () => _navigate(6),
       child: Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
@@ -583,7 +559,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     final total = stats.rdvTotal > 0 ? stats.rdvTotal : 1;
 
     return GestureDetector(
-      onTap: () => _navigate(11),
+      onTap: () => _navigate(10),
       child: Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(

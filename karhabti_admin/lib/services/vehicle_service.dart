@@ -492,4 +492,70 @@ class VehicleService {
 
     return csv;
   }
+
+  Future<List<Map<String, dynamic>>> getVehiculesDuGarage(String garageId) async {
+    try {
+      final rdv = await _supabase
+          .from('rendez_vous')
+          .select('immatriculation')
+          .eq('garage_id', garageId)
+          .neq('statut', 'annule');
+
+      final immats = rdv
+          .map((e) => e['immatriculation'] as String?)
+          .whereType<String>()
+          .toSet()
+          .toList();
+      if (immats.isEmpty) return [];
+
+      final voitures = await _supabase
+          .from('voiture')
+          .select(
+            'immatriculation, marque, modele, moteur, annee, total_km, daily_km',
+          )
+          .inFilter('immatriculation', immats);
+
+      final preds = await _supabase
+          .from('predictions')
+          .select(
+            'fk_immatriculation, battery_health, brake_wear, tire_wear, oil_change, belt_risk, clutch_wear, "ShockAbsorber_Wear", next_replacement_date',
+          )
+          .inFilter('fk_immatriculation', immats);
+
+      final uv = await _supabase
+          .from('user_vehicles')
+          .select('immatriculation, user_id')
+          .inFilter('immatriculation', immats);
+      final userIds = uv
+          .map((e) => e['user_id'] as String?)
+          .whereType<String>()
+          .toSet()
+          .toList();
+
+      final clients = userIds.isEmpty
+          ? <Map<String, dynamic>>[]
+          : await _supabase
+              .from('client')
+              .select('id, nom_client, telephone')
+              .inFilter('id', userIds);
+
+      final predByImmat = {for (final p in preds) p['fk_immatriculation']: p};
+      final userByImmat = {for (final u in uv) u['immatriculation']: u['user_id']};
+      final clientById = {for (final c in clients) c['id']: c};
+
+      return voitures.map((v) {
+        final userId = userByImmat[v['immatriculation']];
+        return {
+          ...v,
+          'prediction': predByImmat[v['immatriculation']],
+          'client': userId != null ? clientById[userId] : null,
+        };
+      }).toList();
+    } catch (e) {
+      if (kDebugMode) {
+        print('Error getVehiculesDuGarage: $e');
+      }
+      return [];
+    }
+  }
 }
